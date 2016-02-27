@@ -1,7 +1,7 @@
 # geography
 
 ## Installation:
-pip install geography
+pip install geography  # FIXME: Change to github release because package is not published at pypi.
 
 ## Usage:
 
