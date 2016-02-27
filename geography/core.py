@@ -40,6 +40,6 @@ def get_neighborhood(lat, lng, data_dir=None):
             # check each polygon to see if it contains the point
             for feature in js['features']:
                 polygon = shape(feature['geometry'])
-                #if polygon.contains(point):
-                #    return (os.path.splitext(filename)[0], feature['properties']['neighbourhood'])
+                if polygon.contains(point):
+                    return (os.path.splitext(filename)[0], feature['properties']['neighbourhood'])
     return (None, None)
