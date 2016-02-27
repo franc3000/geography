@@ -22,20 +22,24 @@ def get_neighborhood(lat, lng, data_dir=None):
         this_dir = os.path.dirname(os.path.abspath(__file__))
         data_dir = os.path.normpath(os.path.join(this_dir, 'data'))
 
-    for geo_file in os.listdir(data_dir):
-        if not geo_file.endswith('.geojson'):
-            continue
+    for (dirpath, dirnames, filenames) in os.walk(data_dir):
+        for filename in filenames:
+            if not filename.endswith('.geojson'):
+                continue
 
-        print('Seeking through {}...'.format(geo_file))
-        with open(os.path.join(data_dir, geo_file), 'r') as f:
-            js = json.load(f)
+            # Get the name relative to data dir.
+            identity = os.path.join(dirpath.replace(data_dir, ''), filename)
+            # TODO: Use logging instead.
+            print('Seeking through {} ...'.format(identity))
+            with open(os.path.join(dirpath, filename), 'r') as f:
+                js = json.load(f)
 
-        # construct point based on lat/long returned by geocoder
-        point = Point(lat, lng)
+            # construct point based on lat/long
+            point = Point(lat, lng)
 
-        # check each polygon to see if it contains the point
-        for feature in js['features']:
-            polygon = shape(feature['geometry'])
-            if polygon.contains(point):
-                return (os.path.splitext(geo_file)[0], feature['properties']['neighbourhood'])
+            # check each polygon to see if it contains the point
+            for feature in js['features']:
+                polygon = shape(feature['geometry'])
+                #if polygon.contains(point):
+                #    return (os.path.splitext(filename)[0], feature['properties']['neighbourhood'])
     return (None, None)
