@@ -21,11 +21,13 @@ def get_neighborhood(lat, lng, data_dir=None):
     if not data_dir:
         this_dir = os.path.dirname(os.path.abspath(__file__))
         data_dir = os.path.normpath(os.path.join(this_dir, 'data'))
+
     for geo_file in os.listdir(data_dir):
         if not geo_file.endswith('.geojson'):
             continue
 
-        with open(geo_file, 'r') as f:
+        print('Seeking through {}...'.format(geo_file))
+        with open(os.path.join(data_dir, geo_file), 'r') as f:
             js = json.load(f)
 
         # construct point based on lat/long returned by geocoder
