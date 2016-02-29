@@ -1,7 +1,7 @@
 # geography
 
 ## Installation:
-pip install -e git://github.com/franc3000/geography.git@v0.0.2#egg=geography
+pip install -e git://github.com/franc3000/geography.git@v0.0.3#egg=geography
 
 ## Usage:
 
@@ -15,7 +15,8 @@ Features: austin_neighbourhoods, neighborhood: 78739
 
 ### As a library
 ```python
->>> from geography import get_neighborhood
+>>> from geography import get_neighborhood, ensure_index
+>>> ensure_index()  # Create index to speed up the search.
 >>> print get_neighborhood(-97.8904, 30.207777)
 ('austin_neighbourhoods', 78739)
 ```
