@@ -1,8 +1,11 @@
 import json
+import logging
 import os
 
 from rtree import index
 from shapely.geometry import shape, Point
+
+logger = logging.getLogger(__name__)
 
 # all indexed directories. Key is directory, value is index.Index()
 indexes = {}
@@ -25,7 +28,7 @@ def ensure_index(data_dir=None):
             for feature in features:
                 polygon = shape(feature['geometry'])
                 if 'neighbourhood' not in feature.get('properties', {}):
-                    # print('No neighborhood for {}'.format(filename))
+                    logger.warning('No neighborhood for {}. Do not include to index.'.format(identity))
                     continue
                 minx, miny, maxx, maxy = polygon.bounds
                 idx.insert(i, (minx, miny, maxx, maxy),
@@ -64,7 +67,7 @@ def get_neighborhood(lat, lng, data_dir=None):
         for identity, features in _generate_features(data_dir):
             for feature in features:
                 if 'neighbourhood' not in feature.get('properties', {}):
-                    # print('No neighborhood for {}'.format(filename))
+                    logger.warning('No neighborhood for {}. Do not include to index.'.format(identity))
                     continue
                 polygon = shape(feature['geometry'])
                 if polygon.contains(point):
