@@ -1,7 +1,7 @@
 # geography
 
 ## Installation:
-pip install -e git://github.com/franc3000/geography.git@v0.0.4#egg=geography
+pip install -e git://github.com/franc3000/geography.git@v0.0.5#egg=geography
 
 ## Usage:
 
