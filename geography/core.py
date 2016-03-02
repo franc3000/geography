@@ -32,7 +32,7 @@ def ensure_index(data_dir=None):
                     continue
                 minx, miny, maxx, maxy = polygon.bounds
                 idx.insert(i, (minx, miny, maxx, maxy),
-                           obj=(identity, polygon, feature['properties']['label']))
+                           obj=(identity, feature['geometry'], feature['properties']['label']))
                 i += 1
 
         # update cache.
@@ -60,7 +60,9 @@ def get_neighborhood(lat, lng, data_dir=None):
     idx = indexes.get(data_dir)
 
     if idx:
-        for ident, polygon, neighborhood in [n.object for n in idx.intersection(point.bounds, objects=True)]:
+        for hit in list(idx.intersection(point.bounds, objects=True)):
+            ident, geometry, neighborhood = hit.object
+            polygon = shape(geometry)
             if polygon.contains(point):
                 return ident, neighborhood
     else:
