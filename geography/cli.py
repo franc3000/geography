@@ -13,7 +13,7 @@ def make_arg_parser():
 
     parser.add_argument('lat', type=float, nargs='?', help='Latitude')
     parser.add_argument('lng', type=float, nargs='?', help='Longitude')
-    parser.add_argument('-d', '--directory', nargs=1, type=binary_type, help='Data directory.')
+    parser.add_argument('-d', '--directory', type=binary_type, help='Data directory.')
     parser.add_argument('-v', '--version', action='store_true', help='Print version.')
 
     return parser

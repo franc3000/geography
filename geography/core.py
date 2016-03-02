@@ -27,12 +27,12 @@ def ensure_index(data_dir=None):
 
             for feature in features:
                 polygon = shape(feature['geometry'])
-                if 'neighbourhood' not in feature.get('properties', {}):
+                if 'label' not in feature.get('properties', {}):
                     logger.warning('No neighborhood for {}. Do not include to index.'.format(identity))
                     continue
                 minx, miny, maxx, maxy = polygon.bounds
                 idx.insert(i, (minx, miny, maxx, maxy),
-                           obj=(identity, polygon, feature['properties']['neighbourhood']))
+                           obj=(identity, polygon, feature['properties']['label']))
                 i += 1
 
         # update cache.
@@ -54,24 +54,25 @@ def get_neighborhood(lat, lng, data_dir=None):
     if not data_dir:
         data_dir = DEFAULT_DATA_DIR
 
-    point = Point(lat, lng)
+    x, y = lng, lat
+    point = Point(x, y)
 
     idx = indexes.get(data_dir)
 
     if idx:
-        for identity, polygon, neighborhood in [n.object for n in idx.intersection(point.bounds, objects=True)]:
+        for ident, polygon, neighborhood in [n.object for n in idx.intersection(point.bounds, objects=True)]:
             if polygon.contains(point):
-                return identity, neighborhood
+                return ident, neighborhood
     else:
         print('{} directory is not indexed. Using slow iteration method...'.format(data_dir))
         for identity, features in _generate_features(data_dir):
             for feature in features:
-                if 'neighbourhood' not in feature.get('properties', {}):
-                    logger.warning('No neighborhood for {}. Do not include to index.'.format(identity))
+                if 'label' not in feature.get('properties', {}):
+                    logger.warning('No neighborhood for {}. Skip.'.format(identity))
                     continue
                 polygon = shape(feature['geometry'])
                 if polygon.contains(point):
-                    return identity, feature['properties']['neighbourhood']
+                    return identity, feature['properties']['label']
     return (None, None)
 
 
