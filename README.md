@@ -1,22 +1,22 @@
 # geography
 
 ## Installation:
-pip install -e git://github.com/franc3000/geography.git@v0.0.3#egg=geography
+pip install -e git://github.com/franc3000/geography.git@v0.0.4#egg=geography
 
 ## Usage:
 
 ### As console command
 ```bash
-neib -97.8904 30.207777
+neib 32.7858 -96.799 -d neighborhoods
 ```
 ```
-Features: austin_neighbourhoods, neighborhood: 78739
+Features: tx_dallas_48113.geojson, neighborhood: City Center District
 ```
 
 ### As a library
 ```python
 >>> from geography import get_neighborhood, ensure_index
 >>> ensure_index()  # Create index to speed up the search.
->>> print get_neighborhood(-97.8904, 30.207777)
-('austin_neighbourhoods', 78739)
+>>> print get_neighborhood(32.7858, -96.799)
+('tx_dallas_48113.geojson', 'City Center District')
 ```
